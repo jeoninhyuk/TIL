@@ -13,6 +13,6 @@ songs = soup.select('#lst50')
 with open('melon_rank.csv', 'w', encoding='utf-8') as f:
     for song in songs:
         rank = song.select_one('td:nth-child(2) > div > span.rank').text
-        title = song.select_one('td:nth-child(6) > div > div.ellipsis.rank01 > span > a').text
-        artist = song.select_one('td:nth-child(6) > div > div > ')
+        title = song.select_one('td:nth-child(6) > div > div > div.ellipsis.rank01 > span > a').text
+        artist = song.select_one('td:nth-child(6) > div > div > div.ellipsis.rank02 > a').text
         f.write(f'{rank}위, {title}, {artist}\n')
