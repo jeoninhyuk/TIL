@@ -7,7 +7,7 @@ res = requests.get('https://finance.naver.com/marketindex/').text
 #pip install bs4
 text = bs4.BeautifulSoup(res,'html.parser')
 
-kospi - text.select_one('#exchangeList > li.on > a.head.usd > div > span.value')
+kospi = text.select_one('#exchangeList > li.on > a.head.usd > div > span.value')
 
-#print(kospi.text)
+print(kospi.text)
 
