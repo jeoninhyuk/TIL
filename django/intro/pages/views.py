@@ -70,6 +70,10 @@ def catch(request):
 
 
 def lotto(request):
-    context = {"lotto": lotto}
+    name = request.GET.get('name')
+    lotto = sorted(random.sample(range(1,45),6))
+    context = {"lotto": lotto,"name": name}
     return render(request, "lotto.html", context)
 
+def name(request):
+    return render(request, "name.html")
