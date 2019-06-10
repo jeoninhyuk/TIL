@@ -2,10 +2,10 @@ from django.shortcuts import render, redirect
 from .models import Board
 
 def index(request):
-    #boards = Board.objects.order_by('-id')
-    boards = Board.objects.all()[::-1]
-    context = {'boards':boards}
-    return render(request, 'boards/index.html', context)
+    #boards = Board.objects.order by('-id')
+     boards = Board.objects.all()[::-1]
+     context = {'boards':boards}
+     return render(request, 'boards/index.html', context)
 
 def new(request):
     return render(request, 'boards/new.html')
@@ -37,4 +37,5 @@ def update(request, pk):
     board = Board.objects.get(pk=pk)
     board.title = request.POST.get('title')
     board.content = request.POST.get('content')
+    board.save()
     return redirect(f'/boards/{board.pk}/')
