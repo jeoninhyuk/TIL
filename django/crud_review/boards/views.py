@@ -2,40 +2,55 @@ from django.shortcuts import render, redirect
 from .models import Board
 
 def index(request):
-    #boards = Board.objects.order by('-id')
-     boards = Board.objects.all()[::-1]
-     context = {'boards':boards}
-     return render(request, 'boards/index.html', context)
+    boards = Board.objects.order_by('-id')
+    context = {'boards':boards}
+    return render(request, 'boards/index.html', context)
 
 def new(request):
-    return render(request, 'boards/new.html')
+    if request.method == 'POST':
+        print(request.method)
+        title = request.POST.get('title')
+        content = request.POST.get('content')
 
-def create(request):
-    title = request.POST.get('title')
-    content = request.POST.get('content')
+        board = Board(title=title, content=content)
+        board.save()
+        return redirect('boards:detail', board.pk)
+    else:
+        return render(request, 'boards/new.html')
 
-    board = Board(title=title, content=content)
-    board.save()
-    return redirect(f'/boards/{board.pk}/')
-
-def detail(request, pk):
-    board = Board.objects.get(pk=pk)
+def detail(request, board_pk):
+    board = Board.objects.get(pk=board_pk)
     context = {'board':board}
     return render(request, 'boards/detail.html', context)
 
-def delete(request, pk):
-    board = Board.objects.get(pk=pk)
-    board.delete()
-    return redirect('/boards/')
+def delete(request, board_pk):
+    board = Board.objects.get(pk=board_pk)
+    if request.method == 'POST':
+        board.delete()
+        return redirect('boards:index')
+    else:
+        return redirect('boards:detail', board.pk)
 
-def edit(request, pk):
-    board = Board.objects.get(pk=pk)
-    context = {'board':board}
-    return render(request, 'boards/edit.html', context)
+def edit(request, board_pk):
+    board = Board.objects.get(pk=board_pk)
+    if request.method == 'POST':
+        board.title = request.POST.get('title')
+        board.content = request.POST.get('content')
+        board.save()
+        return redirect('boards:detail', board.pk)
+    else:
+        context = {'board':board}
+        return render(request, 'boards/edit.html', context)
 
-def update(request, pk):
-    board = Board.objects.get(pk=pk)
-    board.title = request.POST.get('title')
-    board.content = request.POST.get('content')
-    board.save()
-    return redirect(f'/boards/{board.pk}/')
+def comments_create(request, board_pk):
+    board = Board.objects.get(pk=board_pk)
+    if request.method == 'POST':
+        comment = Comment()
+        # comment.board = board
+        comment.board_id = board.pk
+        comment.content =  request.POST.get('content')
+        comment.save()
+        return redirect('boards:detail', board.pk)
+    else:
+        return redirect('boards:detail', board.pk)
+

@@ -4,7 +4,7 @@
 {% block body %}
     <h1 class="text-center">NEW</h1>
     <hr>
-    <form action="/boards/create/" method="POST">
+    <form action="" method="POST">
         {% csrf_token %}
         <label for="title">Title</label><br>
         <input type="text" name="title" id="title"><br>
@@ -12,5 +12,5 @@
         <textarea name="content" id="content" cols="30" rows="10"></textarea>
         <input type="submit" value="Submit">
     </form>
-    <a href="/boards/">[메인 페이지]</a>
+    <a href="{% url 'boards:index' %}">[메인 페이지]</a>
 {% endblock %}
