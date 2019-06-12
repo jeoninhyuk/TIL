@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
 from .models import Board, Comment
 
+# Create your views here.
+
 def index(request):
     boards = Board.objects.order_by('-id')
     context = {'boards':boards}

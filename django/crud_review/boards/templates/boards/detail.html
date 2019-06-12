@@ -16,9 +16,16 @@
     </form>
 
     <hr>
-        <p><b>댓글 목록</b></p>
+        <p><b>댓글 목록 | 현재 댓글 개수:{{ comments|length }}</b></p>
         {% for comment in comments %}
             <li>{{ comment.content }}</li>
+            <a href="{% url 'boards:comments_edit' board.pk comment.pk %}">댓글 수정</a>
+            <form action="" method="POST">
+                {% csrf_token %}
+                <input type="submit" value="댓글 삭제">
+            </form>
+        {% empty %}
+            <p><b>댓글이 없네요...댓글 좀달아주세요</b></p>
         {% endfor %}
     <hr>
     <a href="{% url 'boards:index' %}">[메인 페이지]</a><br>
