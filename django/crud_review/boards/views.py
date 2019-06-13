@@ -11,8 +11,8 @@ def new(request):
         print(request.method)
         title = request.POST.get('title')
         content = request.POST.get('content')
-
-        board = Board(title=title, content=content)
+        image = request.FILES.get('image')
+        board = Board(title=title, content=content, image=image)
         board.save()
         return redirect('boards:detail', board.pk)
     else:
@@ -36,6 +36,7 @@ def edit(request, board_pk):
     if request.method == 'POST':
         board.title = request.POST.get('title')
         board.content = request.POST.get('content')
+        board.image = request.FILES.get('image')
         board.save()
         return redirect('boards:detail', board.pk)
     else:
@@ -64,7 +65,7 @@ def comments_edit(request, board_pk, comment_pk):
         context = {'comment':comment}
         return render(request, 'boards/comment_edit.html', context)
 
-def comments_delete(request, board_pk, comment_pk)
+def comments_delete(request, board_pk, comment_pk):
     comment = Comment.objects.get(pk=comment_pk)
     if request.method == 'POST':
         comment.delete()

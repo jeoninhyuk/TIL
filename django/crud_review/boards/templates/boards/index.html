@@ -1,7 +1,8 @@
 {% extends 'boards/base.html' %}
-
+{% load static %}
 {% block body %}
     <h1 class="text-center">INDEX</h1>
+    <img src="{% static 'boards/images/photo.jpg' %}" alt="photo">
     <hr>
     {% for board in boards %}
         <p>글 번호: {{ board.pk }}</p>
