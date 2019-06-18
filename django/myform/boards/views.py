@@ -14,14 +14,15 @@ def create(request):
         form = BoardForm(request.POST)
         #embed()
         if form.is_valid():
-            title = form.cleaned_data.get('title')
-            content = form.cleaned_data.get('content')
-            board = Board.objects.create(title=title, content=content)
+            board = form.save()
+            # title = form.cleaned_data.get('title')
+            # content = form.cleaned_data.get('content')
+            # board = Board.objects.create(title=title, content=content)
             return redirect('boards:detail', board.pk)
     else:
         form = BoardForm()
     context = {'form':form}
-    return render(request, 'boards/create.html', context)
+    return render(request, 'boards/form.html', context)
 
 def detail(request, board_pk):
     board = get_object_or_404(Board, pk=board_pk)
@@ -41,11 +42,12 @@ def update(request, board_pk):
     if request.method == 'POST':
         form = BoardForm(request.POST)
         if form.is_valid():
-            board.title = form.cleaned_data.get('title')
-            board.content = form.cleaned_data.get('content')
-            board.save()
+            form.save()
+            # board.title = form.cleaned_data.get('title')
+            # board.content = form.cleaned_data.get('content')
+            # board.save()
             return redirect('boards:detail', board.pk)
     else:
-        form = BoardForm(initial=board.__dict__)
-    context = {'form': form}
-    return render(request, 'boards/create.html', context)
+        form = BoardForm(instance=board)
+    context = {'form': form, 'board':board}
+    return render(request, 'boards/form.html', context)
