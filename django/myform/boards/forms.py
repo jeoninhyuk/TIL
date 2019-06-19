@@ -1,5 +1,5 @@
 from django import forms
-from .models import Board
+from .models import Board, Comment
 
 class BoardForm(forms.ModelForm):
     title = forms.CharField(
@@ -23,7 +23,13 @@ class BoardForm(forms.ModelForm):
     class Meta:
          model = Board
          fields = ['title', 'content',]
-#
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['content',]
+
+
 # class BoardForm(forms.Form):
 #     title = forms.CharField(
 #         max_length=10,

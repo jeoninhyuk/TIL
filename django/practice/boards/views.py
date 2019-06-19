@@ -18,7 +18,7 @@ def new(request):
         board.save()
         return redirect('boards:detail', board.pk)
     else:
-        return render(request, 'boards/new.html')
+        return render(request, 'boards/form.html')
 
 def detail(request, board_pk):
     board = Board.objects.get(pk=board_pk)

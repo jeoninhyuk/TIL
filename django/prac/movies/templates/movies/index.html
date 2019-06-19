@@ -1,0 +1,17 @@
+{% extends 'movies/base.html' %}
+{% load static %}
+{% block body %}
+        <h1 class="text-center">영화 목록</h1>
+        <hr>
+{% for movie in movies %}
+            <p>영화명: {{ movie.title }}</p>
+            <p>영화명(원문): {{ movie.title_origin }}</p>
+            <p>TMDB투표수: {{ movie.vote_count }}</p>
+            <p>개봉일: {{ movie.open_date }}</p>
+            <p>장르: {{ movie.genre}}</p>
+            <p>평점: {{ movie.score }}</p>
+            <p>포스터 이미지: {{ movie.poster_url }} </p>
+            <p>영화 소개: {{ movie.description }}</p>
+        <hr>
+{% endfor %}
+{% endblock %}
