@@ -32,7 +32,11 @@ def detail(request, board_pk):
     board = get_object_or_404(Board, pk=board_pk)
     comments = board.comment_set.all()
     comment_form = CommentForm()
-    context = {'board':board, 'comments':comments, 'comment_form':comment_form}
+    context = {
+        'board':board,
+        'comments':comments,
+        'comment_form':comment_form,
+    }
     return render(request, 'boards/detail.html', context)
 
 def delete(request, board_pk):
@@ -84,3 +88,14 @@ def comments_delete(request, board_pk, comment_pk):
         return redirect('boards:detail', board_pk)
     comment.delete()
     return redirect('boards:detail', board_pk)
+
+@login_required
+def like(request, board_pk):
+    board = get_object_or_404(Board, pk=board_pk)
+
+
+    if request.user in board.like_users.all():
+        board.like_users.remove(request.user)
+    else:
+        board.like_users.add(request.user)
+    return redirect('boards:index')
