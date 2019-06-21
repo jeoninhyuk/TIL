@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
 from .models import Board, Comment
@@ -30,12 +31,14 @@ def create(request):
 
 def detail(request, board_pk):
     board = get_object_or_404(Board, pk=board_pk)
+    person = get_object_or_404(get_user_model(), pk=board.user.pk)
     comments = board.comment_set.all()
     comment_form = CommentForm()
     context = {
         'board':board,
         'comments':comments,
         'comment_form':comment_form,
+        'person':person,
     }
     return render(request, 'boards/detail.html', context)
 
@@ -99,3 +102,13 @@ def like(request, board_pk):
     else:
         board.like_users.add(request.user)
     return redirect('boards:index')
+
+@login_required()
+def follow(request, board_pk, user_pk):
+    person = get_object_or_404(get_user_model(), pk=user_pk)
+
+    if request.user in person.followers.all():
+        person.followers.remove(request.user)
+    else:
+        person.followers.add(request.user)
+    return redirect('boards:detail', board_pk)
